@@ -1,4 +1,4 @@
-title 0.5exercice
+title 0.5exercicecd
 
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
 server-->browser: HTML-code
