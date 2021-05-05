@@ -1,0 +1,14 @@
+title 0.6exercice
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over browser:
+browser starts executing js-code
+that prevents the default form submit event
+redraws the html code adding the new note
+then sends the note to the server to be 
+properly added to the database
+end note
+
+server-->browser: 201 (Created)
+
+
