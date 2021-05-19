@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const Display = ({ value }) => <h1>{value}</h1>
 
 const Button = ({ handleClick, text }) => (
-    <button onClick={handleClick}>
+    <button onClick={(handleClick)}>
         {text}
     </button>
 )
