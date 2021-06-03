@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import personsService from './services/persons'
+import Notification from './components/Notification'
+import './index.css'
 
 const Filter = ({ phonebookFilter, filterResults }) => (
     <div> filter shown with
@@ -21,11 +23,15 @@ const PersonForm = ({ addName, newName, handleChangeName, newNumber, handleChang
         </div>
     </form>
 )
-const Persons = ({ personsToShow }) => (
+
+const Persons = ({ personsToShow, handleDelete }) => (
     <>
         {
             personsToShow.map((person) => (
-                <div key={person.name}>{person.name} {person.number}</div>
+                <div key={person.name}>
+                    {person.name} {person.number}
+                    <button onClick={() => handleDelete(person.id, person.name)}>delete</button>
+                </div>
             ))
         }
     </>
@@ -38,17 +44,37 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [phonebookFilter, setFilter] = useState('')
+    const [message, setMessage] = useState([])
 
     const hook = () => {
-        axios
-            .get('http://localhost:3001/persons')
-            .then(response => {
-                setPersons(response.data)
-                console.log(persons)
+        personsService
+            .getAll()
+            .then(initialPersons => {
+                setPersons(initialPersons)
             })
     }
 
     useEffect(hook, []);
+
+    const handleDelete = (id, name) => {
+        const result = window.confirm(`Delete ${name}?`);
+        if (result) {
+            personsService
+                .remove(id)
+                .then(response => {
+                    setPersons(persons.filter(person => person.id !== id))
+                })
+                .catch(error => {
+                    const messageObject = {
+                        msg: `${name} was already deleted`,
+                        class: 'error'
+                    }
+                    setMessage(messageObject)
+                    setTimeout(() => { setMessage([]) }, 5000)
+
+                })
+        }
+    }
 
     const handleChangeName = (event) => {
         setNewName(event.target.value)
@@ -69,15 +95,38 @@ const App = () => {
 
         persons.forEach(person => {
             if (person.name === newName) {
-                alert(`${newName} is already added to phonebook`)
+                if (window.confirm(` ${person.name} is already added to phonebook, replace the old number with a new one?`)) {
+                    personsService
+                        .update(person.id, personObject)
+                        .then(response => {
+                            const messageObject = {
+                                msg: `Number updated`,
+                                class: 'success'
+                            }
+                            setMessage(messageObject)
+                            setTimeout(() => { setMessage([]) }, 5000)
+                            setPersons(persons.map(p => p.id !== person.id ? p : response))
+                        })
+                }
                 exists = true;
             }
         })
 
         if (!exists) {
-            setPersons(persons.concat(personObject))
-            setNewName("")
-            setNewNumber("")
+            personsService
+                .create(personObject)
+                .then(returnedPerson => {
+                    const messageObject = {
+                        msg: `Added ${returnedPerson.name}`,
+                        class: 'success'
+                    }
+                    setMessage(messageObject)
+                    setTimeout(() => { setMessage([]) }, 5000)
+                    setPersons(persons.concat(returnedPerson))
+                    setNewName("")
+                    setNewNumber("")
+                })
+
         }
     }
 
@@ -92,11 +141,12 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={message.msg} messageClass={message.class} />
             <Filter phonebookFilter={phonebookFilter} filterResults={filterResults} />
             <h2>add a new</h2>
             <PersonForm addName={addName} newName={newName} handleChangeName={handleChangeName} newNumber={newNumber} handleChangeNumber={handleChangeNumber} />
             <h2>Numbers</h2>
-            <Persons personsToShow={personsToShow} />
+            <Persons personsToShow={personsToShow} handleDelete={handleDelete} />
         </div>
     )
 }
