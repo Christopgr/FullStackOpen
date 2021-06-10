@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const personsDbUrl = 'http://localhost:3001/persons'
+const personsDbUrl = '/api/persons'
 
 const getAll = () => {
     const request = axios.get(personsDbUrl)
