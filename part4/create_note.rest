@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Learning to Code the Full Stack in JS",
+    "author": "Chris Topalis",
+    "url": "www.willExistSoon.com",
+    "likes": 0
+}

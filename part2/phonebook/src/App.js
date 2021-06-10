@@ -106,6 +106,15 @@ const App = () => {
                             setMessage(messageObject)
                             setTimeout(() => { setMessage([]) }, 5000)
                             setPersons(persons.map(p => p.id !== person.id ? p : response))
+                        }).catch(error => {
+                            // this is the way to access the error message
+                            const messageObject = {
+                                msg: error.response.data.error,
+                                class: 'error'
+                            }
+                            setMessage(messageObject)
+                            setTimeout(() => { setMessage([]) }, 5000)
+                            console.log(error.response.data)
                         })
                 }
                 exists = true;
@@ -125,6 +134,15 @@ const App = () => {
                     setPersons(persons.concat(returnedPerson))
                     setNewName("")
                     setNewNumber("")
+                }).catch(error => {
+                    // this is the way to access the error message
+                    const messageObject = {
+                        msg: error.response.data.error,
+                        class: 'error'
+                    }
+                    setMessage(messageObject)
+                    setTimeout(() => { setMessage([]) }, 5000)
+                    console.log(error.response.data)
                 })
 
         }
