@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwZTJkMGVhNzM1YzM1NDc4MDQ4ZWQzMyIsImlhdCI6MTYyNTQ5MzYxMX0.2DMukwan5354KGGvGFVtUmJfF5L_p3lUQVyVuVjZTd0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwZTJkMGVhNzM1YzM1NDc4MDQ4ZWQzMyIsImlhdCI6MTYyNjI1NDI2N30.W_oOIgvZcKsCeAKqfZHaKi-AalErJ0Hy-NWslFwsf3s
 
 {
-    "title": "Learning to Code the Full Stack in JS",
+    "title": "Testing3",
     "author": "Chris Topalis",
     "url": "www.willExistSoon.com",
     "likes": 0

@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const { request } = require('express')
 
 const api = supertest(app)
 
@@ -52,6 +53,7 @@ test('id is correctly defined', async () => {
 })
 
 test('a valid blog can be added', async () => {
+
     const newBlog = {
         title: "Doing boring tests",
         author: "Chris Topalis",
@@ -61,6 +63,7 @@ test('a valid blog can be added', async () => {
 
     await api
         .post('/api/blogs')
+        .set('Authorization','bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwZTJkMGVhNzM1YzM1NDc4MDQ4ZWQzMyIsImlhdCI6MTYyNjI1NDI2N30.W_oOIgvZcKsCeAKqfZHaKi-AalErJ0Hy-NWslFwsf3s')
         .send(newBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/)
